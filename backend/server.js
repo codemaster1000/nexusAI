@@ -28,10 +28,10 @@ app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-app.use('/auth', authRoutes);
-app.use('/analyse', analyseRoutes);
-app.use('/rewrite', rewriteRoutes);
-app.use('/export', exportRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/analyse', analyseRoutes);
+app.use('/api/rewrite', rewriteRoutes);
+app.use('/api/export', exportRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
