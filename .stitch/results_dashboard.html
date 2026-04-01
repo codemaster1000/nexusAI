@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Editorial Ledger - AI Analysis Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-fixed": "#baeed1",
+              "tertiary-container": "#fc7c78",
+              "surface-container-highest": "#dde4dd",
+              "surface-variant": "#dde4dd",
+              "tertiary-fixed-dim": "#ffb3af",
+              "on-tertiary": "#ffffff",
+              "on-tertiary-container": "#711419",
+              "secondary": "#376850",
+              "surface-bright": "#f4fbf4",
+              "on-tertiary-fixed-variant": "#842225",
+              "surface-container-low": "#eef6ee",
+              "surface-dim": "#d4dcd5",
+              "outline": "#6c7a71",
+              "primary-container": "#10b981",
+              "secondary-fixed-dim": "#9ed2b5",
+              "inverse-primary": "#4edea3",
+              "on-tertiary-fixed": "#410005",
+              "primary-fixed-dim": "#4edea3",
+              "on-error-container": "#93000a",
+              "primary": "#006c49",
+              "surface-container-high": "#e3eae3",
+              "tertiary-fixed": "#ffdad7",
+              "inverse-on-surface": "#ebf3eb",
+              "surface-container-lowest": "#ffffff",
+              "surface": "#f4fbf4",
+              "on-background": "#161d19",
+              "background": "#f4fbf4",
+              "tertiary": "#a43a3a",
+              "on-primary-container": "#00422b",
+              "on-surface": "#161d19",
+              "error-container": "#ffdad6",
+              "inverse-surface": "#2b322d",
+              "on-error": "#ffffff",
+              "on-primary-fixed": "#002113",
+              "secondary-container": "#b7ebce",
+              "surface-tint": "#006c49",
+              "primary-fixed": "#6ffbbe",
+              "error": "#ba1a1a",
+              "on-primary-fixed-variant": "#005236",
+              "on-surface-variant": "#3c4a42",
+              "on-secondary-fixed-variant": "#1e4f3a",
+              "outline-variant": "#bbcabf",
+              "on-secondary-container": "#3c6c54",
+              "on-primary": "#ffffff",
+              "surface-container": "#e8f0e9",
+              "on-secondary-fixed": "#002113",
+              "on-secondary": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #006c49 0%, #10b981 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(16px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-container/30">
+<!-- TopAppBar -->
+<header class="bg-emerald-50 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-100 docked full-width top-0 z-50 bg-emerald-100/50 dark:bg-emerald-900/50 flex justify-between items-center px-8 h-20 w-full max-w-none">
+<div class="flex items-center gap-8">
+<h1 class="text-2xl font-bold tracking-tight text-emerald-900 dark:text-emerald-100 font-manrope">The Editorial Ledger</h1>
+<nav class="hidden md:flex items-center gap-6 font-body text-sm">
+<a class="text-emerald-700/70 dark:text-emerald-300/60 hover:text-emerald-900 dark:hover:text-emerald-100 transition-colors" href="#">Dashboard</a>
+<a class="text-emerald-900 dark:text-emerald-50 border-b-2 border-emerald-600 font-bold pb-1" href="#">Analyses</a>
+<a class="text-emerald-700/70 dark:text-emerald-300/60 hover:text-emerald-900 dark:hover:text-emerald-100 transition-colors" href="#">History</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-gradient-primary text-on-primary px-6 py-2.5 rounded-lg font-label text-sm font-bold flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                Export PDF
+            </button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-emerald-100/80 transition-all">
+<span class="material-symbols-outlined text-2xl">account_circle</span>
+</button>
+</div>
+</header>
+<div class="flex min-h-screen pt-20">
+<!-- SideNavBar -->
+<aside class="bg-emerald-50/50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-200 h-screen w-64 border-r border-emerald-100/20 dark:border-emerald-800/20 background color shift surface_container_low fixed left-0 top-0 pt-20 flex flex-col h-full z-40">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8 px-2">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Professional corporate headshot of a male executive in a suit with a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJwsZNau3IHdE6vz-k4GtRUqXEmiD3MJBtnZutVFeyOxDIKE1W5ABcY8oP_hCnM9Rsj_GRgwAkL3sT8qikrKJlRxb8YQrng1IMncCvRQFayy3hy8Z7z31bI7EKApxsXZ_pmfR5O76xN3ka-wGw9MWvGl51QEMT7Pl-0TqSnHlcuidjQDSj7VLpVEZUNw-kI9OH0OGTCco_gND47lx7aTOn_ogFe_7WPAiVSU-S4zERqwvRY3IHK1gtTTlMV3sW_29pPz9UFwKd3tE"/>
+<div>
+<p class="font-manrope font-bold text-sm leading-tight">Editorial AI</p>
+<p class="font-body text-xs text-on-surface-variant opacity-70">Premium Analyzer</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-emerald-700/60 dark:text-emerald-400/60 hover:bg-emerald-100/40 rounded-l-full transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-body font-medium text-sm">Resume Inbox</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-emerald-900 text-emerald-900 dark:text-emerald-50 rounded-l-full shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-body font-medium text-sm">Skill Gap</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-emerald-700/60 dark:text-emerald-400/60 hover:bg-emerald-100/40 rounded-l-full transition-all" href="#">
+<span class="material-symbols-outlined">route</span>
+<span class="font-body font-medium text-sm">Career Path</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-emerald-700/60 dark:text-emerald-400/60 hover:bg-emerald-100/40 rounded-l-full transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body font-medium text-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-12">
+<button class="w-full bg-primary-container/10 text-primary font-bold py-3 rounded-xl border border-primary/20 hover:bg-primary-container/20 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                        New Analysis
+                    </button>
+</div>
+</div>
+<div class="mt-auto p-6 border-t border-emerald-100/10">
+<a class="flex items-center gap-3 px-4 py-3 text-emerald-700/60 hover:bg-emerald-100/40 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-body font-medium text-sm">Help Center</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 bg-surface p-8 pb-24">
+<div class="max-w-6xl mx-auto space-y-12">
+<!-- Hero Score Section -->
+<section class="grid grid-cols-12 gap-8 items-center">
+<div class="col-span-12 lg:col-span-5 flex flex-col items-center justify-center space-y-4">
+<div class="relative w-64 h-64 flex items-center justify-center">
+<!-- Circular Progress SVG -->
+<svg class="w-full h-full -rotate-90 transform">
+<circle class="text-surface-container-highest" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary-container" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-dasharray="691.15" stroke-dashoffset="138.23" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-manrope text-7xl font-extrabold text-on-surface tracking-tighter">82</span>
+<span class="font-body text-sm font-semibold text-primary uppercase tracking-widest">Match Score</span>
+</div>
+</div>
+<div class="text-center px-12">
+<h2 class="font-manrope text-2xl font-bold text-on-surface mb-2">Excellent Fit</h2>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">The candidate's profile strongly aligns with the Senior Editorial Manager role requirements.</p>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-7 space-y-8 bg-surface-container-low p-10 rounded-[2rem]">
+<h3 class="font-manrope text-lg font-bold text-on-surface mb-4">Competency Breakdown</h3>
+<div class="space-y-6">
+<!-- Progress Item -->
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm font-body">
+<span class="text-on-surface-variant font-medium">Professional Experience</span>
+<span class="text-on-surface font-bold">92%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[92%]"></div>
+</div>
+</div>
+<!-- Progress Item -->
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm font-body">
+<span class="text-on-surface-variant font-medium">Core Skills</span>
+<span class="text-on-surface font-bold">78%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[78%]"></div>
+</div>
+</div>
+<!-- Progress Item -->
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm font-body">
+<span class="text-on-surface-variant font-medium">Education &amp; Certs</span>
+<span class="text-on-surface font-bold">65%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[65%]"></div>
+</div>
+</div>
+<!-- Progress Item -->
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm font-body">
+<span class="text-on-surface-variant font-medium">Key Projects</span>
+<span class="text-on-surface font-bold">88%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-[88%]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Skills Analysis Section -->
+<section class="space-y-6">
+<h3 class="font-manrope text-2xl font-bold px-4">Skills Matrix Analysis</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Matched -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-emerald-100/30">
+<div class="flex items-center gap-2 mb-6 text-primary">
+<span class="material-symbols-outlined">check_circle</span>
+<span class="font-manrope font-bold text-sm tracking-wide">Matched Skills</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-primary/10">Content Strategy</span>
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-primary/10">Team Leadership</span>
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-primary/10">SEO Optimization</span>
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-primary/10">Brand Voice</span>
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-primary/10">Copy Editing</span>
+</div>
+</div>
+<!-- Missing -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-emerald-100/30">
+<div class="flex items-center gap-2 mb-6 text-tertiary">
+<span class="material-symbols-outlined">warning</span>
+<span class="font-manrope font-bold text-sm tracking-wide">Missing Skills</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-tertiary/10">SQL Data Entry</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-tertiary/10">CMS Development</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-tertiary/10">Budget Mgmt</span>
+</div>
+</div>
+<!-- Bonus -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-emerald-100/30">
+<div class="flex items-center gap-2 mb-6 text-secondary">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-manrope font-bold text-sm tracking-wide">Bonus Assets</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-secondary/10">Multilingual (FR/ES)</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-secondary/10">AI Prompt Eng</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full text-xs font-medium border border-secondary/10">Video Production</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Detailed Feedback Accordion -->
+<section class="space-y-6">
+<h3 class="font-manrope text-2xl font-bold px-4">Editorial Feedback</h3>
+<div class="space-y-4">
+<!-- Accordion Item 1 (Active) -->
+<div class="bg-surface-container-low rounded-2xl overflow-hidden transition-all ring-1 ring-emerald-100/50">
+<div class="flex items-center justify-between p-6 cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-manrope font-bold text-on-surface">Executive Summary</span>
+<span class="bg-primary-fixed text-on-primary-fixed-variant text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Optimized</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-primary font-label text-xs font-bold hover:underline">Rewrite</button>
+<span class="material-symbols-outlined transition-transform rotate-180">expand_more</span>
+</div>
+</div>
+<div class="p-6 pt-0 border-t border-white/40">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
+<div class="space-y-3">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Strength</p>
+<p class="text-sm text-on-surface leading-relaxed">The summary clearly articulates 10+ years of leadership experience and specific industry achievements.</p>
+</div>
+<div class="space-y-3">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">AI Insight</p>
+<p class="text-sm text-on-surface-variant leading-relaxed">Recommend moving the "AI Tooling" mention to the first sentence to align with current market trends.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Accordion Item 2 -->
+<div class="bg-surface rounded-2xl overflow-hidden transition-all border border-emerald-100/20">
+<div class="flex items-center justify-between p-6 cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-manrope font-bold text-on-surface">Work Experience</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Action Required</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-primary font-label text-xs font-bold hover:underline">Rewrite</button>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Accordion Item 3 -->
+<div class="bg-surface rounded-2xl overflow-hidden transition-all border border-emerald-100/20">
+<div class="flex items-center justify-between p-6 cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-manrope font-bold text-on-surface">Education &amp; Certifications</span>
+<span class="bg-primary-fixed text-on-primary-fixed-variant text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Verified</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-primary font-label text-xs font-bold hover:underline">Rewrite</button>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Accordion Item 4 -->
+<div class="bg-surface rounded-2xl overflow-hidden transition-all border border-emerald-100/20">
+<div class="flex items-center justify-between p-6 cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">info</span>
+<span class="font-manrope font-bold text-on-surface">Projects &amp; Portfolio</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Insight Ready</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-primary font-label text-xs font-bold hover:underline">Rewrite</button>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- Insight Toast -->
+<div class="fixed bottom-8 right-8 z-[60]">
+<div class="glass-card border border-emerald-100/30 p-5 rounded-2xl shadow-2xl max-w-sm flex items-start gap-4 ring-1 ring-on-surface/5">
+<div class="bg-primary-container p-2 rounded-lg text-white">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<div>
+<p class="font-manrope font-bold text-sm text-on-surface">Editorial Insight</p>
+<p class="font-body text-xs text-on-surface-variant mt-1 leading-relaxed">This candidate ranks in the top 5% of applicants for the "Strategic Communication" skill cluster.</p>
+</div>
+<button class="text-on-surface-variant/50 hover:text-on-surface">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</div>
+</body></html>

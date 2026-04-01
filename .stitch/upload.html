@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Editorial Ledger - AI Resume Analyser</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-fixed": "#baeed1",
+              "tertiary-container": "#fc7c78",
+              "surface-container-highest": "#dde4dd",
+              "surface-variant": "#dde4dd",
+              "tertiary-fixed-dim": "#ffb3af",
+              "on-tertiary": "#ffffff",
+              "on-tertiary-container": "#711419",
+              "secondary": "#376850",
+              "surface-bright": "#f4fbf4",
+              "on-tertiary-fixed-variant": "#842225",
+              "surface-container-low": "#eef6ee",
+              "surface-dim": "#d4dcd5",
+              "outline": "#6c7a71",
+              "primary-container": "#10b981",
+              "secondary-fixed-dim": "#9ed2b5",
+              "inverse-primary": "#4edea3",
+              "on-tertiary-fixed": "#410005",
+              "primary-fixed-dim": "#4edea3",
+              "on-error-container": "#93000a",
+              "primary": "#006c49",
+              "surface-container-high": "#e3eae3",
+              "tertiary-fixed": "#ffdad7",
+              "inverse-on-surface": "#ebf3eb",
+              "surface-container-lowest": "#ffffff",
+              "surface": "#f4fbf4",
+              "on-background": "#161d19",
+              "background": "#f4fbf4",
+              "tertiary": "#a43a3a",
+              "on-primary-container": "#00422b",
+              "on-surface": "#161d19",
+              "error-container": "#ffdad6",
+              "inverse-surface": "#2b322d",
+              "on-error": "#ffffff",
+              "on-primary-fixed": "#002113",
+              "secondary-container": "#b7ebce",
+              "surface-tint": "#006c49",
+              "primary-fixed": "#6ffbbe",
+              "error": "#ba1a1a",
+              "on-primary-fixed-variant": "#005236",
+              "on-surface-variant": "#3c4a42",
+              "on-secondary-fixed-variant": "#1e4f3a",
+              "outline-variant": "#bbcabf",
+              "on-secondary-container": "#3c6c54",
+              "on-primary": "#ffffff",
+              "surface-container": "#e8f0e9",
+              "on-secondary-fixed": "#002113",
+              "on-secondary": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(16px);
+      }
+      .primary-gradient {
+        background: linear-gradient(135deg, #006c49 0%, #10b981 100%);
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen">
+<!-- TopAppBar Component -->
+<header class="bg-emerald-50 dark:bg-emerald-950 flex justify-between items-center px-8 h-20 w-full max-w-none docked full-width top-0 z-50 transition-all duration-150 bg-emerald-100/50 dark:bg-emerald-900/50">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tight text-emerald-900 dark:text-emerald-100 font-manrope">The Editorial Ledger</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-emerald-700/70 dark:text-emerald-300/60 hover:text-emerald-900 dark:hover:text-emerald-100 transition-colors title-lg" href="#">Dashboard</a>
+<a class="text-emerald-900 dark:text-emerald-50 border-b-2 border-emerald-600 font-bold pb-1 title-lg" href="#">Analyses</a>
+<a class="text-emerald-700/70 dark:text-emerald-300/60 hover:text-emerald-900 dark:hover:text-emerald-100 transition-colors title-lg" href="#">History</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:block px-6 py-2 text-emerald-900 font-bold hover:bg-emerald-100/80 dark:hover:bg-emerald-800/80 rounded-lg transition-all title-lg">Export PDF</button>
+<button class="p-2 hover:bg-emerald-100/80 dark:hover:bg-emerald-800/80 rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-emerald-900 dark:text-emerald-100" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 pt-20 flex flex-col h-full z-40 h-screen w-64 border-r border-emerald-100/20 dark:border-emerald-800/20 bg-emerald-50/50 dark:bg-emerald-950/50 transition-all duration-300 ease-in-out">
+<div class="flex flex-col flex-1 py-6">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold">JD</div>
+<div>
+<p class="font-headline font-bold text-sm text-on-surface">Editorial AI</p>
+<p class="font-label text-xs text-on-surface-variant opacity-70">Premium Analyzer</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1 pr-4">
+<a class="flex items-center gap-3 px-6 py-3 text-emerald-700/60 dark:text-emerald-400/60 hover:text-emerald-900 dark:hover:text-emerald-100 transition-all duration-300 font-label font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+                    Resume Inbox
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 bg-white dark:bg-emerald-900 text-emerald-900 dark:text-emerald-50 rounded-r-full shadow-sm font-label font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                    Skill Gap
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-emerald-700/60 dark:text-emerald-400/60 hover:text-emerald-900 dark:hover:text-emerald-100 transition-all duration-300 font-label font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+                    Career Path
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-emerald-700/60 dark:text-emerald-400/60 hover:text-emerald-900 dark:hover:text-emerald-100 transition-all duration-300 font-label font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                    Settings
+                </a>
+</nav>
+<div class="px-4 py-4 mt-auto">
+<button class="w-full primary-gradient text-on-primary py-3 rounded-xl font-bold shadow-md hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                    New Analysis
+                </button>
+</div>
+<footer class="px-6 py-4 border-t border-emerald-100/20">
+<a class="flex items-center gap-3 text-emerald-700/60 font-label text-xs hover:text-emerald-900" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help_outline">help_outline</span>
+                    Help Center
+                </a>
+</footer>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-20 min-h-screen bg-surface">
+<div class="max-w-6xl mx-auto px-12 py-16">
+<!-- Hero Heading -->
+<div class="mb-12">
+<h1 class="font-headline text-5xl font-extrabold text-on-surface tracking-tight mb-4">The Editorial Analyzer</h1>
+<p class="font-body text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+                    Refine your potential. Match your professional narrative against industry-leading benchmarks using our high-fidelity AI engine.
+                </p>
+</div>
+<!-- Upload Grid -->
+<div class="grid grid-cols-12 gap-8 items-stretch">
+<!-- Left: Resume PDF Drop Zone -->
+<div class="col-span-12 lg:col-span-5">
+<div class="h-full bg-surface-container-lowest border-2 border-dashed border-outline-variant/30 rounded-[2rem] p-10 flex flex-col items-center justify-center text-center transition-all hover:bg-surface-container-low group cursor-pointer">
+<div class="w-20 h-20 rounded-full bg-secondary-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl text-on-secondary-container" data-icon="upload">upload</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Upload Resume</h3>
+<p class="font-body text-sm text-on-surface-variant opacity-70 mb-6">Drop your PDF or DOCX here</p>
+<div class="px-6 py-2 border border-outline-variant/30 rounded-full text-xs font-bold uppercase tracking-wider text-on-surface-variant group-hover:bg-on-surface group-hover:text-white transition-colors">
+                            Browse Files
+                        </div>
+</div>
+</div>
+<!-- Right: Job Description Text Area -->
+<div class="col-span-12 lg:col-span-7">
+<div class="h-full bg-surface-container-low rounded-[2rem] p-8 flex flex-col shadow-sm">
+<div class="flex items-center justify-between mb-4 px-2">
+<label class="font-headline font-bold text-on-surface text-lg">Job Description</label>
+<span class="text-xs font-label text-on-surface-variant/60">Target benchmarks</span>
+</div>
+<textarea class="flex-1 w-full bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary rounded-2xl p-6 font-body text-on-surface placeholder:text-outline-variant/60 resize-none leading-relaxed" placeholder="Paste Job Description here to analyze compatibility benchmarks..."></textarea>
+</div>
+</div>
+<!-- Bottom: Action Section -->
+<div class="col-span-12 flex justify-center mt-8">
+<button class="group relative px-12 py-5 primary-gradient rounded-full text-on-primary font-headline text-xl font-bold shadow-xl hover:shadow-primary/20 transition-all hover:-translate-y-1 active:translate-y-0 active:scale-95 flex items-center gap-4">
+<span>Analyse Professional Match</span>
+<span class="material-symbols-outlined text-2xl group-hover:translate-x-2 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Bento Metrics (Preview/Decorative) -->
+<div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container rounded-3xl p-6 flex flex-col gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="bolt">bolt</span>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Precision Scan</h4>
+<p class="text-sm text-on-surface-variant">Deep semantic analysis of 40+ skill clusters.</p>
+</div>
+</div>
+<div class="bg-surface-container rounded-3xl p-6 flex flex-col gap-4">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="history_edu">history_edu</span>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Editorial Tone</h4>
+<p class="text-sm text-on-surface-variant">Reviewing narrative clarity and impact metrics.</p>
+</div>
+</div>
+<div class="bg-surface-container rounded-3xl p-6 flex flex-col gap-4">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="verified">verified</span>
+<div>
+<h4 class="font-headline font-bold text-on-surface">ATS Ready</h4>
+<p class="text-sm text-on-surface-variant">Optimized for modern tracking architectures.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Insight Toast -->
+<div class="fixed bottom-8 right-8 z-50 glass-card p-6 rounded-2xl border border-white/20 shadow-2xl max-w-sm">
+<div class="flex items-start gap-4">
+<div class="p-2 bg-primary-container/20 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="tips_and_updates">tips_and_updates</span>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface text-sm">Editorial Tip</p>
+<p class="font-body text-xs text-on-surface-variant mt-1 leading-relaxed">Resumes with quantified achievements perform 40% better in AI-driven initial screenings.</p>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+</button>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.glass-panel {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.soft-bg-gradient {
+  background: radial-gradient(circle at top left, #f0fdf4 0%, #ffffff 50%, #ecfdf5 100%);
+}
+.primary-gradient {
+  background: linear-gradient(135deg, #006c49 0%, #10b981 100%);
+}
+.editorial-shadow {
+  box-shadow: 0 8px 40px -4px rgba(22, 29, 25, 0.06);
+}
