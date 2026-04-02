@@ -5,7 +5,7 @@ async function extractResumeTextFromBuffer(buffer) {
   const dataUrl = `data:application/pdf;base64,${base64Pdf}`;
 
   const response = await callOpenRouter({
-    model: "mistralai/mistral-small-3.2-24b-instruct-2506",
+    model: "google/gemini-2.5-flash",
     systemPrompt:
       "You are an advanced OCR document parser. Your sole task is to extract all the text from the provided resume PDF accurately, maintaining the logical reading order as much as possible. Do not hallucinate, do not add commentary, and do not summarize. Just return the extracted text.",
     userPrompt: [
@@ -31,8 +31,7 @@ async function extractResumeTextFromBuffer(buffer) {
     text,
     metadata: {
       pages: 1, // Number of pages might not be known via LLM
-      extraction_model:
-        response.model || "mistralai/mistral-small-3.2-24b-instruct-2506",
+      extraction_model: response.model || "google/gemini-2.5-flash",
       extraction_confidence: confidence,
       scanned_like: text.length < 80,
     },
